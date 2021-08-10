@@ -1,0 +1,5 @@
+*.exe
+*.md
+*.yaml
+*.http
+*.gitignore

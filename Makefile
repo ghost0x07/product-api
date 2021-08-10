@@ -1,2 +1,10 @@
+tag=product-api
+version=0.0.1
+
 build:
-	go build -o product-api.exe cmd\product-api\main.go
+	go get -d ./...
+	go build -v ./cmd/...
+
+buildImage:
+	docker build -t $(tag):$(version) .
+	docker tag $(tag):$(version) $(tag):latest
