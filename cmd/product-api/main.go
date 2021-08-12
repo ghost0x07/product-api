@@ -3,14 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"product-api/rest"
 )
 
-const (
-	defaultIP          = ""
-	defaultPort uint16 = 4000
-)
+var host = ""
+var port uint16 = 4000
 
 func main() {
 
@@ -20,13 +17,15 @@ func main() {
 }
 
 func run() error {
-	ip := defaultIP
-	port := defaultPort
-	sm := http.NewServeMux()
-	sm.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "It Works!")
-	})
-	s := rest.NewServer(ip, port, sm)
-	log.Println("Starting Server")
+	err := parseEnv()
+	if err != nil {
+		return fmt.Errorf("unable to parse env variables: %w", err)
+	}
+
+	r := createRouter()
+
+	s := rest.NewServer(host, port, r)
+	log.Printf("Starting Server on %v:%v\n", host, port)
+
 	return s.Start()
 }

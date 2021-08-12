@@ -12,14 +12,14 @@ import (
 )
 
 type Server struct {
-	IP      string
+	Host    string
 	Port    uint16
 	Handler http.Handler
 }
 
-func NewServer(ip string, port uint16, handler http.Handler) *Server {
+func NewServer(host string, port uint16, handler http.Handler) *Server {
 	return &Server{
-		IP:      ip,
+		Host:    host,
 		Port:    port,
 		Handler: handler,
 	}
@@ -27,7 +27,7 @@ func NewServer(ip string, port uint16, handler http.Handler) *Server {
 
 func (s *Server) Start() error {
 	port := strconv.Itoa(int(s.Port))
-	addr := s.IP + ":" + port
+	addr := s.Host + ":" + port
 
 	serv := &http.Server{
 		Addr:         addr,
@@ -39,7 +39,7 @@ func (s *Server) Start() error {
 	go func() {
 		err := serv.ListenAndServe()
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("unable to run server: %w", err))
 		}
 	}()
 
