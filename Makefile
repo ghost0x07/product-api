@@ -1,5 +1,5 @@
 tag=product-api
-version=0.0.1
+version=1.0.0
 
 build:
 	go get -d ./...
